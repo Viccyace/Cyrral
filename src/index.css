@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'DM Sans', sans-serif;
+
+  --color-bg: #FCF9F8;
+  --color-ink: #1B1C1C;
+  --color-ink-soft: #524346;
+  --color-ink-faint: #857375;
+  --color-hairline: #D7C1C4;
+  --color-primary: #6e3041;
+  --color-primary-hover: #561f2d;
+  --color-primary-light: #8A4758;
+  --color-secondary: #85522D;
+  --color-brand: #A86040;
+  --color-pink: #ffd9df;
+  --color-peach: #ffdcc6;
+  --color-sage: #caebc9;
+  --color-sage-ink: #2f4b32;
+  --color-plum: #5b2433;
+  --color-surface-low: #F5F3F3;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+input::placeholder {
+  opacity: 1;
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.floaty {
+  animation: floaty 7s ease-in-out infinite;
+}
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  animation: revealUp linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 28%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; }
+  .floaty { animation: none; }
+}
+
+.material-symbol {
+  font-family: 'Material Symbols Outlined';
+  font-feature-settings: 'liga';
+}
