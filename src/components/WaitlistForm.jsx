@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase.js';
 
+// Welcome emails are deferred until a sending domain is verified in Resend.
+// Until then this stays off, so signups don't trigger failed Resend calls.
+// To turn it back on: set VITE_SEND_WELCOME_EMAIL=true (Vercel env var) and redeploy.
+const SEND_WELCOME_EMAIL = import.meta.env.VITE_SEND_WELCOME_EMAIL === 'true';
+
 function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
@@ -42,7 +47,8 @@ export default function WaitlistForm({ id, variant = 'default', withStage = fals
 
     setStatus('success');
 
-    if (!error) {
+    // Only fire the welcome email when enabled AND this was a fresh signup (not a duplicate).
+    if (SEND_WELCOME_EMAIL && !error) {
       supabase.functions.invoke('send-welcome-email', { body: { email } }).catch((err) => {
         console.error('Welcome email failed to send:', err);
       });

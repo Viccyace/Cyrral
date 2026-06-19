@@ -60,7 +60,14 @@ In Supabase: **Project Settings → API**. Copy:
 Put both in a local `.env` file (copy `.env.example`). These are safe to expose in the
 browser — that's what the anon key + RLS policy are for.
 
-### 3. Set up Resend
+### 3. Set up Resend (optional — the welcome email is off by default)
+
+> **The welcome email is deferred until you own a verified sending domain.** Resend
+> will not send from a `*.vercel.app` URL, and in test mode it only delivers to your
+> own Resend-account email. So the email is gated behind a flag
+> (`VITE_SEND_WELCOME_EMAIL`, default `false`) — the waitlist collects emails fine
+> without it. Skip to step 5. Come back to steps 3–4 once you have a real domain, then
+> set `VITE_SEND_WELCOME_EMAIL=true` in Vercel and redeploy to switch the email on.
 
 1. In Resend, verify a sending domain (**Domains → Add Domain**, then add the DNS
    records it gives you at your domain registrar). Until that's verified you can test
@@ -97,11 +104,15 @@ your frontend code or `.env`.
 1. Push this repo to GitHub (if you haven't already).
 2. In Vercel: **Add New → Project**, import the repo. Framework preset: **Vite**.
 3. Under **Settings → Environment Variables**, add the same two frontend variables
-   from step 2: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+   from step 2: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. (Leave
+   `VITE_SEND_WELCOME_EMAIL` unset/`false` for now — add it as `true` later, once
+   you've done steps 3–4 with a verified domain.)
 4. Deploy.
 
-That's it — once steps 1–4 are done, the live form will insert into Supabase and the
-welcome email will send automatically on every new (non-duplicate) signup.
+That's it — the live form inserts into Supabase on every signup. The welcome email
+stays off until you finish steps 3–4 and flip `VITE_SEND_WELCOME_EMAIL` to `true`; once
+on, it sends automatically on every new (non-duplicate) signup. Until then you're simply
+collecting addresses, which you can email in one batch whenever you're ready.
 
 ## Project structure
 
